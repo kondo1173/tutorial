@@ -2,13 +2,23 @@
 
 use Phalcon\Mvc\Controller;
 
-class IndexController extends Controller
+class IndexController extends \Phalcon\MVC\Controller
 {
-    /**
-     * Welcome and user list
-     */
     public function indexAction()
     {
-        $this->view->users = Users::find();
+        $this->view->setVar('title', 'Flower List');
+    
+        // if (empty($this->session->has('user')) === true) {
+        //     return $this->dispatcher->forward(
+        //         [
+        //             "controller" => "login",
+        //             "action"     => "index",
+        //         ]
+        //     );
+        // } 
+
+        
+        $flowers = Flower::find();
+        $this->view->setVar('flowers', $flowers);
     }
 }

@@ -1,33 +1,52 @@
-<?php
+<div class="text-right">
+    <a class="btn btn-outline-secondary" href="/cart" role="button">Cart</a>
+    <a class="btn btn-outline-secondary" href="/logout" role="button">Logout</a>
+</div>
 
-echo "<h1>Hello!</h1>";
+<div class="h6" style="text-align: left"> こんにちは! <i class="fa-regular fa-face-smile"></i>
+            <?php if ($this->session->has("user")): ?>
+                <?= $this->session->get("user")["name"]; ?>さん
+            <?php endif; ?>
+</div>
 
-echo $this->tag->linkTo(["signup", "Sign Up Here!", 'class' => 'btn btn-primary']);
+<h1><?= $title ?></h1>
 
-if ($users->count() > 0) {
-    ?>
+
+<?php if ($flowers->count() > 0): ?>
     <table class="table table-bordered table-hover">
         <thead class="thead-light">
         <tr>
             <th>#</th>
             <th>Name</th>
-            <th>Email</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>Cart</th>
         </tr>
         </thead>
         <tfoot>
         <tr>
-            <td colspan="3">Users quantity: <?php echo $users->count(); ?></td>
+            <td colspan="3">Flowers quantity: <?= $flowers->count(); ?></td>
         </tr>
         </tfoot>
         <tbody>
-        <?php foreach ($users as $user) { ?>
-            <tr>
-                <td><?php echo $user->id; ?></td>
-                <td><?php echo $user->name; ?></td>
-                <td><?php echo $user->email; ?></td>
-            </tr>
-        <?php } ?>
+                <?php foreach ($flowers as $flower): ?>
+                    <tr>
+                    <form method="POST" action="/cart">
+                    <td><?= $flower->id; ?><input type="hidden" name="id" value="<?= $flower->id; ?>"></td>
+                        <td><?= $flower->name; ?></td>
+                        <td><?= $flower->price; ?></td>
+                        <td><?= $flower->stock; ?></td>
+                        <td>
+                            <select name="quantity" id="quantity">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                            </select>
+                            <input type="submit" value="カートに入れる" class="btn btn-primary">
+                        </form>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
         </tbody>
     </table>
-    <?php
-}
+<?php endif; ?>

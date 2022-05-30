@@ -1,0 +1,58 @@
+<head>
+<h1><?= $title; ?></h1>
+</head>
+<body>
+
+<?php if ($this->session->has("cart")) : ?>
+    <table class="table table-bordered table-hover">
+        <thead class="thead-light">
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>price</th>
+            <th>quantity</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tfoot>
+
+        </tfoot>
+        <tbody>
+        <?php $sum = 0; ?> 
+        <?php foreach ($this->session->get('cart') as $value) : ?>
+            <?php foreach ($flowers as $flower): ?>
+                <?php if ($value['id'] == $flower->id): ?>
+              <tr>
+                <td><?= $flower->id; ?></td>
+                <td><?= $flower->name; ?></td>
+                <td><?= $flower->price; ?></td>
+                <td><?= $value['quantity']; ?></td>
+                <td>
+                <form method="POST" action="/cart/remove" >
+                    <input type="submit" value="Delete" class="btn btn-primary" >
+                    <input type="hidden" value="<?= $value['id']; ?>" name="id">
+                </form>
+            </tr>
+            <tr>
+            <?php $sum += $value['quantity'] * $flower->price; ?>
+            <?php endif;?>
+            <?php endforeach; ?>
+        <?php endforeach; ?>
+            <td colspan="3">Total amount: ￥<?=  number_format($sum); ?></td>
+            </tr>
+
+        </tbody>
+    </table>
+<?php else: ?>
+    <h5>カートは空です</h5><br>
+<?php endif; ?>
+
+<form action="/order" method="post">
+    <?= $this->tag->linkTo(['/', 'Go back', 'class' => 'btn btn-primary']); ?>
+    <input type="hidden" name="totalPrice" value="<?= $sum ?>">
+    <input type="submit" class="btn btn-primary" value="レジに進む" >
+</form>
+
+
+</body>
+

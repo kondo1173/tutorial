@@ -1,0 +1,25 @@
+<h2><?= $title ?></h2>
+
+<p><font color="red"><?= isset($errors['pass_err']) ? $errors['pass_err'] : '' ?></font></p>
+
+
+<?= $this->tag->form("/login/search"); ?>
+
+    <p>
+        <label for="name">Email</label>
+        <?php echo $this->tag->textField("email"); ?>
+    </p>
+
+    <p>
+        <label for="email">Password</label>
+        <?php echo $this->tag->textField("password"); ?>
+    </p>
+
+    <p>
+        <?php echo $this->tag->submitButton("送信"); ?>
+    </p>
+
+</form>
+
+<?= $this->tag->linkTo(["signup", "新規登録はこちら!", 'class' => 'btn btn-primary']); ?>
+

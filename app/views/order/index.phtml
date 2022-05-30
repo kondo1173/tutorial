@@ -1,0 +1,40 @@
+<h2><?= $title ?></h2>
+<hr>
+<div class="container">
+    <form action="/order/register" method="post">
+        <div>
+            <label for="name">氏名:</label><br/>
+            <input id="name" type="text" name="name" value="<?= $userData->name; ?>" required="required" size="25" maxlength="20">
+
+        </div>
+        <div>
+            <label for="postalCode" size="25" maxlength="20">郵便番号（半角数字）:</label><br>
+            <input type="text" name="postalCode" value="<?= $userData->postalCode; ?>" " required="required">
+        </div>
+        <br>
+        <div>
+        <label for="prefecture" size="25" maxlength="20">都道府県 :</label>
+            <select name="prefecture">
+                <option hidden>選択してください</option>
+                <?php foreach ($prefecture as $data): ?>
+                    <option value="<?= $data->name ?>" <?= $userData->prefecture == $data->name ? 'selected' : '' ?>><?= $data->name ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <br>
+        <div>
+            <label for="address">住所:</label>
+            <input type="text" name="address" value="<?= $userData->address; ?>" required="required" size="25" maxlength="20">
+        </div>
+        <br>
+        <div>
+            <input type="hidden" name="totalPrice" value="<?= $totalPrice ?>">
+            <input type="submit" value="">
+        </div>
+        <br>
+    </form>
+    <div>
+        <a class="btn btn-outline-secondary" href="/cart" role="button">Cart へ戻る</a>
+    </div>
+        <br>
+</div>

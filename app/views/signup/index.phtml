@@ -1,19 +1,53 @@
-<h2>Sign up using this form</h2>
+<body>
+<h2><?= $title ?></h2>
+<hr>
 
-<?php echo $this->tag->form("signup/register"); ?>
+<div class="container">
+    <form action="/register" method="POST">
+        <div>
+            <label for="name">氏名 :</label>
+            <input id="name" type="text" name="name" placeholder="例: 山田太郎" required="required" size="25" maxlength="20">
+        </div>
+        <div>
+            <label for="postalCode" size="25" maxlength="20">郵便番号(半角数字) :</label>
+            <input type="text" name="postalCode" placeholder="例: 1050001 " required="required">
+        </div>
+        <div>
+            <label for="prefecture" size="25" maxlength="20">都道府県 :</label>
+            <select name="prefecture">
+                <option hidden>選択してください</option>
+                <?php foreach ($prefecture as $data): ?>
+                    <option value="<?= $data->name ?>"><?= $data->name ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+         <div>
+            <label for="address">住所 :</label>
+            <input type="text" name="address" placeholder="例: 港区虎ノ門4丁目1-1" required="required" size="25" maxlength="20">
+        </div>
+        <br>
+        <div>
+            <label for="password">Password :</label><br/>
+            <input type="password" name="password" placeholder="例: 半角英数字7桁以上" required="required" size="25" maxlength="20">
+        </div>
+        <div>
+            <label for="passwordConfirmation">Password Confirmation :</label><br/>
+            <input type="password" name="passwordConfirmation" placeholder="例: 半角英数字7桁以上" required="required" size="25" maxlength="20">
+        </div>
+        <div>
+            <label for="email">Email :</label><br/>
+            <input type="text" name="email" placeholder="例: test@test.com" required="required" size="25" maxlength="50">
+        </div>
+        <br>
+        <div>
+            <input type="submit" value="登録">
+        </div>
+        <br>
+    </form>
+    <div>
+        <a class="btn btn-outline-secondary" href="/login" role="button">loginHome へ戻る</a>
+    </div>
+    <br>
+</div>
 
-    <p>
-        <label for="name">Name</label>
-        <?php echo $this->tag->textField("name"); ?>
-    </p>
-
-    <p>
-        <label for="email">E-Mail</label>
-        <?php echo $this->tag->textField("email"); ?>
-    </p>
-
-    <p>
-        <?php echo $this->tag->submitButton("Register"); ?>
-    </p>
-
-</form>
+<body>
