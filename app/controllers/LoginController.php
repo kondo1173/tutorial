@@ -2,7 +2,7 @@
 
 use Phalcon\Mvc\Controller;
 
-class LoginController extends Controller
+class LoginController extends CommonController
 {
     public function indexAction()
     {

@@ -1,0 +1,59 @@
+<head>
+<h2><?= $title; ?></h2>
+</head>
+<body>
+
+<?php if ($this->session->has("user")) : ?>
+    <table class="table table-bordered table-hover">
+        <thead class="thead-light">
+        <tr>
+            <th>受注番号</th>
+            <th>購入日時</th>
+            <th>Status</th>
+            <th>お支払金額</th>
+            <th>配送先(お名前)</th>
+            <th>配送先住所</th>
+            <th>詳細/取消</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach ($orders as $order): ?>
+            <tr>
+                <td><?= $order->id; ?></td>
+                <td><?= $order->createTimestamp; ?></td>
+                <td>
+                <?php foreach ($arrayStatus as $status): ?>
+                    <?php if ($status->id == $order->status AND $order->status == 3): ?> 
+                        <font color="gray"><?= $status->status; ?><br>
+                        <?= $order->updateTimestamp ?></font>
+                    <?php elseif ($status->id == $order->status): ?>
+                        <?= $status->status; ?>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+                </td>
+                <td><?= number_format($order->totalPrice); ?></td>
+                <td><?= $order->name; ?></td>
+                <td><?= $order->postalCode; ?><?= $order->prefecture; ?><?= $order->address; ?></td>
+                <td>
+                <form action="/myOrders/detail" method="post">
+                    <input type="hidden" name="orderId" value="<?= $order->id ?>" class="btn btn-primary">
+                    <input type="submit" value="詳細" >
+                </form>
+                <?php if ($order->status != 3): ?>
+                <form action="/myOrders/delete" method="post">
+                    <input type="hidden" name="orderId" value="<?= $order->id ?>">
+                    <input type="hidden" name="status" value="<?= $order->status ?>">
+                    <input type="submit" value="削除" >
+                </form>
+                <?php endif; ?>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+            </tbody>
+    </table>
+<?php else: ?>
+    <h5>購入履歴はございません。</h5><br>
+<?php endif; ?>
+    <?= $this->tag->linkTo(['/', 'Go back', 'class' => 'btn btn-primary']); ?>
+</body>
+

@@ -1,9 +1,12 @@
+
 <head>
+<?= $this->tag->linkTo(['/cart/delete', 'カゴを空にする', 'class' => 'btn btn-primary']); ?>
+
 <h1><?= $title; ?></h1>
 </head>
 <body>
 
-<?php if ($this->session->has("cart")) : ?>
+<?php if ($this->session->has('cart')): ?>
     <table class="table table-bordered table-hover">
         <thead class="thead-light">
         <tr>
@@ -26,7 +29,13 @@
                 <td><?= $flower->id; ?></td>
                 <td><?= $flower->name; ?></td>
                 <td><?= $flower->price; ?></td>
-                <td><?= $value['quantity']; ?></td>
+                <td>
+                <?php if ($value['quantity'] > $flower->stock): ?>
+                    <?= $value['quantity']; ?><strong class="text-danger"> (SOLD OUT! /在庫<?= $flower->stock ?>)</strong>
+                <?php else: ?>
+                    <?= $value['quantity']; ?>
+                <?php endif; ?>
+                </td>
                 <td>
                 <form method="POST" action="/cart/remove" >
                     <input type="submit" value="Delete" class="btn btn-primary" >

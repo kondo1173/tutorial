@@ -2,95 +2,72 @@
 
 use Phalcon\Mvc\Controller;
 
-class CartController extends \Phalcon\MVC\Controller
+class CartController extends CommonController
 {
-    protected array $items = [];
-
-    public function ___construct()
-    {
-        $this->items = [];
-    
-    }
 
     public function indexAction()
     {
         $this->view->setVar('title', 'Shopping Cart');
+        $this->loginCheck();
 
-        if (empty($this->request->getPost('id')) === false || empty($this->request->getPost('quantity')) === false ) {
+        if ($this->request->isPost()) {
             $id = $this->request->getPost('id');
             $quantity = $this->request->getPost('quantity');
     
-            if ($this->session->has("cart") ) {
-            
-                $this->setItems($this->session->get("cart"));
-                $this->add($id, $quantity);
-                $this->session->set("cart",  $this->getItems());
-            
+            if ($this->session->has("cart")) {
+                $cart = $this->session->get("cart");
+                $arrayId = array_column($cart, 'id');
+                if (!in_array($id, $arrayId)) {
+                    $addData = array (
+                        'id' => (int)$id,
+                        'quantity' => (int)$quantity
+                    );
+                    array_push($cart, $addData);
+                    $this->session->set('cart', $cart);
+                } else {
+                    $index = array_search($id, $arrayId);
+                    $cart[$index]["quantity"] += $quantity;
+                    $this->session->set("cart", $cart);
+                }
             } else {
-                $this->add((int)$id, (int)$quantity);
-                $this->session->set("cart", $this->getItems());
+                $cart[] = array (
+                    'id' => (int)$id,
+                    'quantity' => (int)$quantity
+                );
+                $this->session->set('cart', $cart);
             }
         }
-
         $flowers = Flower::find();
         $this->view->setVar('flowers', $flowers);
     }
 
-    public function setItems(array $data)
-    {
-        $this->items = $data;
-    }
-
-    public function getItems()
-    {
-        return $this->items;
-    }
-
-    public function getIndex(int $itemId): int
-    {
-        foreach ($this->items as $key => $data) {
-             if ($data['id'] === $itemId) {
-                return $key;
-            }
-        }
-        return -1;
-    }
-
-    public function add(int $itemId, int $quantity)
-    {
-        $key = $this->getIndex($itemId);
-        if ($key >= 0) {
-            $data = $this->items[$key];
-        } else {
-            $data = [
-                'id' => $itemId,
-                'quantity' => 0,
-            ];
-        }
-        $data['quantity'] += $quantity;
-        if ($key < 0) {
-            $this->items[] = $data;
-        } else {
-            $this->items[$key] = $data;
-        }
-    }
-
-
     public function removeAction()
     {
-        if (empty($this->request->getPost('id')) === false) {
-            $id = $this->request->getPost('id');
-            $key = $this->getIndex((int)$id);
+        $cart =$this->session->get("cart");
+        $id = $this->request->getPost('id');
 
-            if ($key >= 0) {
-                unset($this->items[$key]);
-                $this->items = array_values($this->items);
+        foreach($cart as $key => $value){
+            if ($value['id'] == $id) {
+                unset($cart[$key]);
+                $cart = array_values($cart);
+                $this->session->set("cart", $cart);
                 $message = "削除できました。";
+                break;
             } else {
                 $message = '商品番号取得に失敗しました';
-            } 
-            $this->view->message = $message;
-        }
+            }
+        } 
+        $this->view->message = $message;
+    }
+
+    public function deleteAction()
+    {
+        $this->session->remove("cart");
+        return $this->dispatcher->forward(
+            [
+                "controller" => "index",
+                "action"     => "index",
+            ]
+        );
     }
 }
-

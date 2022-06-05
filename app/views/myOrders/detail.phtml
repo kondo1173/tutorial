@@ -1,0 +1,38 @@
+<head>
+<?php if ($order->status == 1): ?>
+    <form action="/order/register" method="post" style="text-align:right;">
+        <input type="hidden" name="orderId" value="<?= $order->id ?>">
+        <input type="submit" value="購入する" class="btn btn-primary">
+    </form>
+<?php endif; ?>
+
+<h2><?= $title; ?></h2>
+
+</head>
+<body>
+
+<table class="table table-bordered table-hover">
+    <thead class="thead-light">
+    <tr>
+        <th>商品番号</th>
+        <th>商品名</th>
+        <th>単価</th>
+        <th>数量</th>
+        <th>購入日時</th>
+    </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($details as $detail): ?>
+        <tr>
+            <td><?= $detail->flowerId ?></td>
+            <td><?= $detail->flowerName ?></td>
+            <td><?= number_format($detail->flowerPrice) ?></td>
+            <td><?= $detail->quantity ?></td>
+            <td><?= $detail->createTimestamp ?></td>
+        </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+<?= $this->tag->linkTo(['myOrders', 'Go back', 'class' => 'btn btn-primary']); ?>
+</body>
+

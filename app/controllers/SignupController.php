@@ -2,13 +2,12 @@
 
 use Phalcon\Mvc\Controller;
 
-class SignupController extends Controller
+class SignupController extends CommonController
 {
     public function indexAction()
     {
         $this->view->setVar('title', '新規会員登録');
-        $prefecture = Prefecture::find();
-        $this->view->setVar('prefecture', $prefecture);
+        $this->view->setVar('prefecture', Prefecture::find());
     }
 
     public function registerAction()

@@ -1,0 +1,6 @@
+<div class="alert alert-<?php echo $success === true ? 'success' : 'danger'; ?>">
+<p><font color="blue"><?= isset($message['success']) ? $message['success'] : '' ?></font></p>
+<p><font color="red"><?= isset($message['danger']) ? $message['danger'] : '' ?></font></p>
+</div>
+
+<?php echo $this->tag->linkTo(['myOrders', 'Go back', 'class' => 'btn btn-primary']); ?>
