@@ -6,6 +6,7 @@ class SignupController extends CommonController
 {
     public function indexAction()
     {
+        $this->tag->prependTitle('会員登録');
         $this->view->setVar('title', '新規会員登録');
         $this->view->setVar('prefecture', Prefecture::find());
     }

@@ -2,6 +2,15 @@
 <h2><?= $title; ?></h2>
 </head>
 <body>
+<script>
+    $(function() {
+        $('.btn-delete').on('click', function(e) {
+            if (!confirm('削除します。よろしいですか？')) {
+                e.preventDefault();
+            }
+        });
+    });
+</script>
 
 <?php if ($this->session->has("user")) : ?>
     <table class="table table-bordered table-hover">
@@ -35,15 +44,16 @@
                 <td><?= $order->name; ?></td>
                 <td><?= $order->postalCode; ?><?= $order->prefecture; ?><?= $order->address; ?></td>
                 <td>
-                <form action="/myOrders/detail" method="post">
+                <!-- <form action="/myOrders/detail" method="get">
                     <input type="hidden" name="orderId" value="<?= $order->id ?>" class="btn btn-primary">
                     <input type="submit" value="詳細" >
-                </form>
+                </form> -->
+                <a href="/my-orders/detail/?orderId=<?= $order->id ?>" class="btn btn-outline-secondary">詳細</a>
                 <?php if ($order->status != 3): ?>
-                <form action="/myOrders/delete" method="post">
+                <form action="/my-orders/delete" method="post">
                     <input type="hidden" name="orderId" value="<?= $order->id ?>">
                     <input type="hidden" name="status" value="<?= $order->status ?>">
-                    <input type="submit" value="削除" >
+                    <input class="btn-delete outline-secondary" type="submit" value="削除"  >
                 </form>
                 <?php endif; ?>
                 </td>

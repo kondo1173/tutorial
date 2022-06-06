@@ -6,6 +6,7 @@ class IndexController extends CommonController
 {
     public function indexAction()
     {
+        $this->tag->prependTitle('Flower List');
         $this->view->setVar('title', 'Flower List');
         $this->loginCheck();
 

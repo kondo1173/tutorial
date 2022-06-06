@@ -6,6 +6,7 @@ class LoginController extends CommonController
 {
     public function indexAction()
     {
+        $this->tag->prependTitle('Login');
         $this->view->setVar('title', 'login');
     }
 
@@ -58,7 +59,6 @@ class LoginController extends CommonController
                     "action"     => "index",
                 ]
                 );
-    
             }
         }
     }

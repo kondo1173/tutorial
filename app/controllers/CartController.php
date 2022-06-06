@@ -7,6 +7,7 @@ class CartController extends CommonController
 
     public function indexAction()
     {
+        $this->tag->prependTitle('Shopping Cart');
         $this->view->setVar('title', 'Shopping Cart');
         $this->loginCheck();
 
@@ -37,16 +38,15 @@ class CartController extends CommonController
                 $this->session->set('cart', $cart);
             }
         }
-        $flowers = Flower::find();
-        $this->view->setVar('flowers', $flowers);
+        $this->view->setVar('flowers', Flower::find());
     }
 
     public function removeAction()
     {
-        $cart =$this->session->get("cart");
+        $cart = $this->session->get("cart");
         $id = $this->request->getPost('id');
 
-        foreach($cart as $key => $value){
+        foreach ($cart as $key => $value) {
             if ($value['id'] == $id) {
                 unset($cart[$key]);
                 $cart = array_values($cart);

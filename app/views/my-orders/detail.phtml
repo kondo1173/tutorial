@@ -1,4 +1,4 @@
-<head>
+
 <?php if ($order->status == 1): ?>
     <form action="/order/register" method="post" style="text-align:right;">
         <input type="hidden" name="orderId" value="<?= $order->id ?>">
@@ -7,9 +7,6 @@
 <?php endif; ?>
 
 <h2><?= $title; ?></h2>
-
-</head>
-<body>
 
 <table class="table table-bordered table-hover">
     <thead class="thead-light">
@@ -33,6 +30,6 @@
         <?php endforeach; ?>
     </tbody>
 </table>
-<?= $this->tag->linkTo(['myOrders', 'Go back', 'class' => 'btn btn-primary']); ?>
-</body>
+<?= $this->tag->linkTo(['my-orders', 'Go back', 'class' => 'btn btn-primary']); ?>
+
 

@@ -3,6 +3,12 @@ use Phalcon\Mvc\Controller;
 
 class CommonController extends \Phalcon\MVC\Controller
 {
+    public function beforeExecuteRoute()
+    {
+        $this->tag->setTitle('My Rose Garden');
+        $this->tag->setTitleSeparator(' | ');
+    }
+
     public function loginCheck()
     {
         if (empty($this->session->has('user')) === true) {
